@@ -13,41 +13,31 @@
 <body>
   <?php
 
-$POSTS_FILE_NAME = "data.json";
-$data = file_get_contents($POSTS_FILE_NAME);
-// print_r($data);
-$posts = json_decode($data);
-print_r($posts);
+  require_once('Post.php');
 
-// require_once("./Post.php");
-
-// $posts = readPostsFromJson($POSTS_FILE_NAME);
-// print_r($POSTS_FILE_NAME);
-
-// function readPostsFromJson()
-// {
-//   $posts[0] = new Post('100万人突破するまで生配信！');
-//   $posts[1] = new Post('頼む！行かないでくれ！');
-//   $posts[2] = new Post('登録即解除とかしたらどうなるん');
-//   $posts[3] = new Post('お前らは大嫌いだろうけど素直に凄いわ');
-
-//   return $posts;
-// }
-
-// $data_file_name = "data.json";
-// $data = file_get_contents($data_file_name);
-// $posts = json_decode($data, true);
-
-foreach($posts as $post) {
-  echo "<div class ='card'>";
-  echo "<div class ='dttm'>" . $post->date . "</br></div>";
-  echo "<div class ='post'>" . $post->post . "</br></div>";
-  echo "</div>";
+  function readPostsFromJson()
+  {
+    $POSTS_FILE_NAME = "data.json";
+    $data = file_get_contents($POSTS_FILE_NAME);
+    $posts = json_decode($data);
+    return $posts;
   }
 
+  $json = readPostsFromJson();
 
+  foreach ($json as $post) {
+    print_r($post);
+    $post = new Post($post->date, $post->post);
+    // array_push($posts, $post);
+
+    echo "<div class ='card'>";
+    echo "<div class ='dttm'>" . $post->getDatetime() . "</br></div>";
+    echo "<div class ='post'>" . $post->getPost() . "</br></div>";
+    echo "</div>";
+  }
+
+  
   ?>
-  <!-- <h3>以上がポストです</h3> -->
 </body>
 
 </html>
