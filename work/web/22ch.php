@@ -12,31 +12,51 @@
 
 <body>
   <?php
-
+$newpost = $_GET["newpost"];
+echo $newpost;
   require_once('Post.php');
 
   function readPostsFromJson()
   {
-    $POSTS_FILE_NAME = "data.json";
-    $data = file_get_contents($POSTS_FILE_NAME);
-    $posts = json_decode($data);
-    return $posts;
-  }
+    //jsonファイルを開く
+    $data_file_name = "data.json";
+    $data = file_get_contents($data_file_name);
+    $json = json_decode($data, true);
+    return $json;
+    }
+    $posts = readPostsFromJson();
+    // echo '<br>';
+    // print_r($posts);
+    // echo '<br>';
 
-  $json = readPostsFromJson();
+    if(isset($_GET["newpost"])){
+      $newdate = new DateTime('now');
+      $newdate = $newdate->format('Y-m-d H:i');
+      $array["date"] = $newdate;
+      $array["post"] = $newpost;
+      print_r($array);
+      // file_put_contents($newpost, json_encode($array, JSON_UNESCAPED_UNICODE), LOCK_EX
+    }else{
 
-  foreach ($json as $post) {
-    print_r($post);
-    $post = new Post($post->date, $post->post);
-    // array_push($posts, $post);
+    }
 
-    echo "<div class ='card'>";
-    echo "<div class ='dttm'>" . $post->getDatetime() . "</br></div>";
-    echo "<div class ='post'>" . $post->getPost() . "</br></div>";
-    echo "</div>";
-  }
+    //jsonファイルを$postに入れPostクラスをインスタンス化。引数で中身を渡す。
+    
+    foreach($posts as $post) {
+       $post = new Post($post['date'],$post['post']);
 
-  
+      //Postクラスのget関数を使って表示
+      echo "<div class ='card'>";
+      echo "<div class ='dttm'>" .  $post->getDatetime() . "</br></div>";
+      echo "<div class ='post'>" .  $post->getPost() . "</br></div>";
+      echo "</div>";
+    }
+  // for ($i = 0; $i <= count($posts) - 1; $i++) {
+  //   echo "<div class ='card'>";
+  //   echo "<div class ='dttm'>" . $posts[$i]->dttm . "</br></div>";
+  //   echo "<div class ='post'>" . $posts[$i]->post . "</br></div>";
+  //   echo "</div>";
+  // }
   ?>
 </body>
 
