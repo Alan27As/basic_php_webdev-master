@@ -2,15 +2,15 @@
 
 class Post
 {
-  private $post;
   private $dttm;
+  private $post;
 
   public function __construct($dttm, $post)
   {
     $this->setDatetime($dttm);
     $this->setPost($post);
   }
-
+  
   public function createNewPost($post)
   {
     $this->dttm = new DateTime('now');
